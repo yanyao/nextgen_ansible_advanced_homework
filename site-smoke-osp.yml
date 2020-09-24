@@ -8,7 +8,7 @@
   tasks:
   - name: Curl website
     uri:
-      url: "{% for host in groups['load_balancers'] %} {{ host }} {% endfor %}"
+      url: "{% for host in groups['load_balancers'] %} http://{{ host }} {% endfor %}"
     register: result
 
   - name: Fail if 'Ansible has done its job' is not in the page content

@@ -21,16 +21,12 @@
     register: servers
     
   - name: Curl website
-      uri:
-        url: "http://frontend1/ping"
-        return_content: yes
-      until: '"alive" in result.content'
-      retries: 10
-      delay: 1
+    uri:
+      url: "{% for host in groups['frontend'] %} {{ host }} {% endfor %}"
       register: result
 
   - name: Fail if 'Ansible has done its job' is not in the page content
     fail:
-    when: "'Ansible has done its job' not in webpage.results[0].content"
+    when: "'Ansible has done its job' not in result.content"
     tags:
       - osp.smoke

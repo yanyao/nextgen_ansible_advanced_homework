@@ -1,2 +1,47 @@
 ---
+apps, tomcat
 
+- name: install tomcat
+  yum:
+    packages:
+      - tomcat
+    state: present
+  tags:
+    - apps
+    - tomcat
+
+- name: "Ensures {{ tomcat_web_root }}/conf dir exists"
+  file: 
+    path: "{{ tomcat_web_root }}"
+    state: directory
+  tags:
+    - apps
+    - tomcat
+
+- name: configure tomcat as a static web server
+  template:
+    src: server.xml.j2
+    dest: "/usr/share/tomcat/conf/server.xml"
+  notify: restart_tomcat
+  tags:
+    - apps
+    - tomcat
+    
+- name: copy index.html
+  template:
+    src: index.html.j2
+    dest: "{{ tomcat_web_root }}"
+  notify: restart_tomcat
+  tags:
+    - apps
+    - tomcat
+
+
+- name: start tomcat
+  service:
+    name: tomcat
+    state: started
+    enabled: true
+  tags:
+    - apps
+    - tomcat

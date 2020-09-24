@@ -7,8 +7,24 @@
     regexp: '^Defaults\s*requiretty'
     replace: 'Defaults  !requiretty'
     backup: yes
+  tags:
+    - base-config
 
 - name: enable repos
+  template:
+    src: repos_template.j2
+    dest: /etc/yum.repods.d/internal.repo
+    owner: root
+    group: root
+    mode: '0600'
+  tags:
+    - base-config
  
 - name: install base tools and packages
+  yum:
+    name: "vim"
+    state: present
+  tags:
+    - base-config
+
 

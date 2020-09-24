@@ -2,7 +2,7 @@
 
 - name: install tomcat
   yum:
-    packages:
+    name:
       - tomcat
     state: present
   tags:

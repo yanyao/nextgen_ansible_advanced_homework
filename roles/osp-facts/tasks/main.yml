@@ -23,7 +23,7 @@
    - name: Wait 300 seconds for port 22 to become open and contain "OpenSSH"
      wait_for:
        port: 22
-       host: "{{ item.public_v4 }}"
      vars:
        ansible_connection: local
+     delegate_to: "{{ item.public_v4 }}"
      with_items: "{{result.openstack_servers}}"

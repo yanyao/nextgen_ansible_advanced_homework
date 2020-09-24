@@ -1,5 +1,4 @@
 ---
-apps, tomcat
 
 - name: install tomcat
   yum:

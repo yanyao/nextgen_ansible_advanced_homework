@@ -9,26 +9,26 @@
     - "{{ postgres_library }}"
   loop_control:
     loop_var: __package
-  tgas: [dbs, postgres]
+  tags: [dbs, postgres]
 
 - name: Check if Postgres initialized
   stat:
     path: "{{ postgres_10_data_dir }}/PG_VERSION"
   register: r_postgres_init_dir_state
-  tgas: [dbs, postgres]
+  tags: [dbs, postgres]
 
 - when: not r_postgres_init_dir_state.stat.exists
   name: Run Postgres initdb to initialize if postgres not initialized
   command: "{{ postgres_10_bin_path }}/postgresql-10-setup initdb"
   notify: restart_postgres
-  tgas: [dbs, postgres]
+  tags: [dbs, postgres]
 
 - name: Setup Postgres for remote password auth
   template:
     src: pg_hba.conf.j2
     dest: "{{ postgres_10_data_dir }}/pg_hba.conf"
   notify: restart_postgres
-  tgas: [dbs, postgres]
+  tags: [dbs, postgres]
 
 - name: Setup Postgres to listen on network interfaces
   lineinfile:
@@ -36,14 +36,14 @@
     line: "listen_addresses = '*'"
     insertafter: "#listen_addresses"
   notify: restart_postgres
-  tgas: [dbs, postgres]
+  tags: [dbs, postgres]
 
 - name: Setup Postgres as started and enabled on boot.
   service:
     name: "{{ postgres_service }}"
     state: "{{ postgres_service_state | default('started') }}"
     enabled: "{{ postgres_service_enabled | default(true) }}"
-  tgas: [dbs, postgres]
+  tags: [dbs, postgres]
 
 - name: Configure Postgres resources, user, database etc 
   block:
@@ -72,5 +72,5 @@
 
 
   become_user: "{{ postgres_user }}"
-  tgas: [dbs, postgres]
+  tags: [dbs, postgres]
 

@@ -21,10 +21,10 @@
       ansible_become: true
      with_items: "{{result.openstack_servers}}"
    - name: Wait 300 seconds for port 22 to become open and contain "OpenSSH"
-  wait_for:
-    port: 22
-    host: "{{ item.public_v4 }}"
-    delay: 10
-  vars:
-    ansible_connection: local
-  with_items: "{{result.openstack_servers}}"
+    wait_for:
+      port: 22
+      host: "{{ item.public_v4 }}"
+      delay: 10
+    vars:
+      ansible_connection: local
+    with_items: "{{result.openstack_servers}}"

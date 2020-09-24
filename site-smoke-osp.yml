@@ -1,25 +1,11 @@
 
 
 # tasks file for roles/osp-instance-delete
-  - name: Fetch Instance Info
-    os_server_info:
-      cloud: "openstack"
-    register: servers
-  - name: Delete instances
-    os_server:
-      cloud: "openstack"
-      state: absent
-      name: "{{ item.id }}"
-    loop: "{{ servers.openstack_servers }}"
-
 - hosts: workstation
-  gather_facts: false
+  gather_facts: true
+  roles:
+  - name: osp-facts
   tasks:
-  - name: OpenStack servers
-    os_server_info:
-      cloud: "openstack"
-    register: servers
-    
   - name: Curl website
     uri:
       url: "{% for host in groups['load_balancers'] %} {{ host }} {% endfor %}"

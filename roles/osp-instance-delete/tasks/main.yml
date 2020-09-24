@@ -9,5 +9,5 @@
       cloud: "openstack"
       state: absent
       name: "{{ item.openstack_servers.id }}"
-    loop: servers.openstack_servers
+    loop: "{{ servers.openstack_servers }}"
    

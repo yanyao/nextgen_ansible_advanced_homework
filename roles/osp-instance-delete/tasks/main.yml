@@ -8,6 +8,6 @@
     os_server:
       cloud: "openstack"
       state: absent
-      name: "{{ item.openstack_servers.id }}"
+      name: "{{ item.id }}"
     loop: "{{ servers.openstack_servers }}"
    

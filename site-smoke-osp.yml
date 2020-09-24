@@ -7,12 +7,12 @@
   - name: osp-facts
   tasks:
   - name: Curl website
-    uri:
-      url: "{% for host in groups['load_balancers'] %} http://{{ host }} {% endfor %}"
+    command:
+      cmd: "curl -s {% for host in groups['load_balancers'] %} http://{{ host }} {% endfor %}"
     register: result
 
   - name: Fail if 'Ansible has done its job' is not in the page content
     fail:
-    when: "'Ansible has done its job' not in result.content"
+    when: "'Ansible has done its job' not in {{ result.stdout }}"
     tags:
       - osp.smoke

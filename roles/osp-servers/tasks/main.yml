@@ -1,3 +1,41 @@
 ---
 
 # tasks file for osp.servers
+- name: Create instances
+  os_server:
+    cloud: openstack
+    name: app1
+    image: rhel-guest
+    key_name: ansible_ssh_key
+    flavor: m2.medium
+    security_groups: apps
+    delete_fip: yes
+    wait: no
+    nics:
+      - net-name: int_network
+    meta: "group=app_servers, deployment_name=QA"
+    userdata: |
+      #!/bin/bash
+      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+      cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
+  loop:
+    - { "name":"app1","meta":"group=app_servers,deployment_name=QA"}
+    - { "name":"app2","meta":"group=app_servers,deployment_name=dev"}
+    - { "name":"database","meta":"group=database_servers,deployment_name=dev"}
+    - { "name":"frontend","meta":"group=load_balancers,deployment_name=dev"}
+
+
+- name: Add floating IP to instance
+  os_floating_ip:
+    cloud: openstack
+    state: present
+    reuse: yes
+    server: "{{ item }}"
+    network: ext_network
+    wait: true
+    timeout: 200
+  loop:
+    - app1
+    - app2
+    - database
+    - frontend

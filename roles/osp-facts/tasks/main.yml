@@ -20,8 +20,8 @@
       ansible_ssh_user: cloud-user
       ansible_become: true
      with_items: "{{result.openstack_servers}}"
-   - name: Wait 300 seconds for port 22 to become open and contain "OpenSSH"
-     wait_for:
-       port: 22
-     delegate_to: "{{ item.public_v4 }}"
-     with_items: "{{result.openstack_servers}}"
+#   - name: Wait 300 seconds for port 22 to become open and contain "OpenSSH"
+#     wait_for:
+#       port: 22
+#     delegate_to: "{{ item.public_v4 }}"
+#     with_items: "{{result.openstack_servers}}"

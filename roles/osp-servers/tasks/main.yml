@@ -23,9 +23,10 @@
     - { "name":"app2","meta":"group=app_servers,deployment_name=dev","sg":"apps"}
     - { "name":"database","meta":"group=database_servers,deployment_name=dev","sg":"db"}
     - { "name":"frontend","meta":"group=load_balancers,deployment_name=dev","sg":"frontend"}
+  
 
 
-- name: Add floating IP to instance
+- name: Assign FIP for servers
   os_floating_ip:
     cloud: openstack
     state: present
@@ -39,3 +40,12 @@
     - app2
     - database
     - frontend
+  register: fip
+
+- name: wait for fip ssh
+  wait_for: 
+    host: "{{ item }}"
+    port: 22
+  loop: "{{ fip.results.floating_ip.floating_ip_address }}"
+
+  

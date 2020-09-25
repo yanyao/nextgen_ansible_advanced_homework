@@ -47,8 +47,8 @@
 
 - name: wait for fip ssh
   wait_for: 
-    host: "{{ item }}"
+    host: "{{ item.floating_ip.floating_ip_address }}"
     port: 22
-  loop: "{{ fip.results.floating_ip.floating_ip_address }}"
+  loop: "{{ fip.results }}"
 
   

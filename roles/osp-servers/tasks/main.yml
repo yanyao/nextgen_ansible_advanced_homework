@@ -1,4 +1,3 @@
----
 
 # tasks file for osp.servers
 - name: Create instances
@@ -19,10 +18,10 @@
       curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
       cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
   loop:
-    - { "name":"app1","meta":"group=app_servers,deployment_name=QA","sg":"apps"}
-    - { "name":"app2","meta":"group=app_servers,deployment_name=dev","sg":"apps"}
-    - { "name":"database","meta":"group=database_servers,deployment_name=dev","sg":"db"}
-    - { "name":"frontend","meta":"group=load_balancers,deployment_name=dev","sg":"frontend"}
+    - { "name":"app1","meta":"group=apps,deployment_name=QA","sg":"apps"}
+    - { "name":"app2","meta":"group=apps,deployment_name=dev","sg":"apps"}
+    - { "name":"database","meta":"group=appdbs,deployment_name=dev","sg":"db"}
+    - { "name":"frontend","meta":"group=frontends,deployment_name=dev","sg":"frontend"}
   
 
 

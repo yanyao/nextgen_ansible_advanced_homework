@@ -42,6 +42,9 @@
     - frontend
   register: fip
 
+- debug:
+    var: fip
+
 - name: wait for fip ssh
   wait_for: 
     host: "{{ item }}"

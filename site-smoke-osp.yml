@@ -8,7 +8,7 @@
   tasks:
   - name: Curl website
     uri:
-      url: "http://{% for host in groups['load_balancers'] %}{{ host }}{% endfor %}"
+      url: "http://{% for host in groups['frontends'] %}{{ host }}{% endfor %}"
       return_content: yes
       status_code: 200
     register: webpage

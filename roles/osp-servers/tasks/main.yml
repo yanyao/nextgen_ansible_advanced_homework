@@ -49,6 +49,7 @@
   wait_for: 
     host: "{{ item.floating_ip.floating_ip_address }}"
     port: 22
+    delay: 10
   delegate_to: "{{ item.floating_ip.floating_ip_address }}"
   loop: "{{ fip.results }}"
 
